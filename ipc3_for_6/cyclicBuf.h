@@ -7,7 +7,7 @@
 struct cyclic_buf
 {
 	volatile uint64_t pos;
-	volatile int array[4096];
+	volatile int array[128][4096];
 };
 
 #endif

@@ -29,20 +29,17 @@ int main() {
 		return 1;
 	}
 
-	mem->pos %= 4096;
-	int currVal = mem->array[mem->pos];
+	mem->pos %= 128;
+	int generation = 0;
 	while(true) {
 		mem->pos++;
-		mem->pos %= 4096;
-		mem->array[mem->pos] = currVal;
+		mem->pos %= 128;
 
-		generate((void*)mem->array, mem->pos);
-
-		currVal++;
-
-		if(mem->pos % 512 == 0) {
+		generate((void*)mem->array[mem->pos], generation);
+		generation++;
+		/*if(mem->pos % 5 == 0) {
 			sleep(1);
-		}
+		}*/
 	}	
 
 	return 0;

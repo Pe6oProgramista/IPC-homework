@@ -21,23 +21,24 @@ int main() {
 		return -1;
 	}	
 
-	uint64_t pos = ( mem->pos + 2048 ) % 4096;
+	uint64_t pos = ( mem->pos + 2048 ) % 128;
 	printf("starting at %ld\n", pos);
 	while(true) {
 		if(mem->pos == pos) {
+			sleep(1);
 			continue;
 		}
 
-		if(verify((void*)mem->array) != mem->pos) {
-			printf("Failed at %ld\n", mem->pos);
+		if(verify((void*)mem->array[pos]) < 0) {
+			printf("Failed at %ld\n", pos);
 			return 1;
 		}
-		if(mem->pos%1024 == 0) {
+		else {
 			printf("passed %lu\n", pos);
 		}
 
 		pos++;
-		pos %= 4096;
+		pos %= 128;
 	}
 
 	return 0;
