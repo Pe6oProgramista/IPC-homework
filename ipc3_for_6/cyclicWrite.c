@@ -11,7 +11,7 @@
 #include "gen.c"
 
 int main() {
-	int memFd = shm_open("simple_memory", O_CREAT | O_RDWR, S_IRWXO);
+	int memFd = shm_open("simple_memory", O_CREAT | O_RDWR, S_IRWXU);
 	if(memFd < 0) {
 		perror("open");
 		return 1;
@@ -29,17 +29,13 @@ int main() {
 		return 1;
 	}
 
-	mem->pos %= 128;
+	mem->pos = 0;
 	int generation = 0;
 	while(true) {
-		mem->pos++;
-		mem->pos %= 128;
 
-		generate((void*)mem->array[mem->pos], generation);
+		generate((void*)mem->array[mem->pos % 128], generation);
+		mem->pos++;
 		generation++;
-		/*if(mem->pos % 5 == 0) {
-			sleep(1);
-		}*/
 	}	
 
 	return 0;

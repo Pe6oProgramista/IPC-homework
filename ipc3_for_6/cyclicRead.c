@@ -21,15 +21,16 @@ int main() {
 		return -1;
 	}	
 
-	uint64_t pos = ( mem->pos + 2048 ) % 128;
+	// uint64_t pos = ( mem->pos + 2048 ) % 128;
+	uint64_t pos = 0;
 	printf("starting at %ld\n", pos);
-	while(true) {
-		if(mem->pos == pos) {
-			sleep(1);
-			continue;
-		}
 
-		if(verify((void*)mem->array[pos]) < 0) {
+	int seed, old_seed = 0;
+	while(true) {
+		while(mem->pos == pos);
+
+		int seed = verify((void*)mem->array[pos]);
+		if(seed == -1) {
 			printf("Failed at %ld\n", pos);
 			return 1;
 		}
@@ -37,8 +38,14 @@ int main() {
 			printf("passed %lu\n", pos);
 		}
 
+		if(old_seed != 0 && old_seed + 1 != seed) {
+			printf("Failed at %ld\n", pos);
+			return 1;
+		}
+
+		old_seed = seed;
 		pos++;
-		pos %= 128;
+		//pos %= 128;
 	}
 
 	return 0;
