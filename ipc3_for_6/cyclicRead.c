@@ -25,7 +25,8 @@ int main() {
 	uint64_t pos = mem->pos;
 	printf("starting at %ld\n", pos);
 	
-	uint64_t seed, old_seed = 0;
+	uint64_t seed, old_seed;
+	bool first = true;
 	while(true) {
 		while(mem->pos == pos);
 
@@ -43,14 +44,18 @@ int main() {
 			printf("passed %ld\n", pos % 128);
 		}
 
-		if(old_seed != 0 && old_seed + 1 != seed) {
-			printf("Failed at %ld\n", pos % 128);
+		if(first){
+        	old_seed = seed;
+            first = false;
+	    }
+	    else if(old_seed + 1 != seed) {
+	        printf("Failed at %ld\n", pos % 128);
 			return 1;
 		}
-
-		old_seed = seed;
+		else {
+			old_seed = seed;
+		}
 		pos++;
-		//pos %= 128;
 	}
 
 	return 0;
