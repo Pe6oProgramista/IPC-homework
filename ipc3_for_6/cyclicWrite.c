@@ -30,7 +30,7 @@ int main() {
 	}
 
 	mem->pos = 0;
-	int generation = 0;
+	uint64_t generation = 0;
 	while(true) {
 
 		generate((void*)mem->array[mem->pos % 128], generation);

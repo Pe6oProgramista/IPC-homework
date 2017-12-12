@@ -22,24 +22,29 @@ int main() {
 	}	
 
 	// uint64_t pos = ( mem->pos + 2048 ) % 128;
-	uint64_t pos = 0;
+	uint64_t pos = mem->pos;
 	printf("starting at %ld\n", pos);
-
-	int seed, old_seed = 0;
+	
+	uint64_t seed, old_seed = 0;
 	while(true) {
 		while(mem->pos == pos);
 
-		int seed = verify((void*)mem->array[pos]);
+		if(mem->pos >= pos + 128) {
+			printf("Failed at %ld\n", pos % 128);
+			return 1;
+		}
+
+		int seed = verify((void*)mem->array[pos % 128]);
 		if(seed == -1) {
-			printf("Failed at %ld\n", pos);
+			printf("Failed at %ld\n", pos % 128);
 			return 1;
 		}
 		else {
-			printf("passed %lu\n", pos);
+			printf("passed %ld\n", pos % 128);
 		}
 
 		if(old_seed != 0 && old_seed + 1 != seed) {
-			printf("Failed at %ld\n", pos);
+			printf("Failed at %ld\n", pos % 128);
 			return 1;
 		}
 
