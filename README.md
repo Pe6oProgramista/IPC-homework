@@ -1,1 +1,1 @@
-Homewrok for pipe and shared memory! :D
+Homewrok for pipe and shared memory. :D
